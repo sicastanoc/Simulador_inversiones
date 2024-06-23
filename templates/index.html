@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <div class="login-container">
+        <h2>Iniciar Sesión</h2>
+        <form id="loginForm" method="get">
+            <div class="form-group">
+                <input type="text" id="nombreUsuario" placeholder="Ingrese un valor" required>
+            </div>
+            <button onclick="enviarDatos()">Enviar</button>
+        </form>
+        <div id="result"></div>
+
+        <script>
+          async function enviarDatos() {
+            const nombreUsuario = document.getElementById('nombreUsuario').value;
+            const url = `http://127.0.0.1:8000/users/${nombreUsuario}`;
+        
+            try {
+              const response = await fetch(url);
+              if (!response.ok) {
+                // Si la respuesta no es exitosa (código de estado no está en el rango 200-299)
+                throw new Error('Usuario no encontrado'); // Puedes personalizar el mensaje de error según necesites
+              }
+              
+              const data = await response.json();
+              document.getElementById('result').textContent = JSON.stringify(data);
+              // Mover la navegación a trading.html dentro del try block después de obtener datos exitosamente
+              window.location.href = 'trading.html';
+              
+            } catch (error) {
+              if (error.message.includes('404')) {
+                // Si el error contiene '404', manejar el caso específico
+                document.getElementById('result').textContent = 'Usuario no encontrado';
+                // No cambiar de página automáticamente en caso de 404
+              } else {
+                // Otro tipo de error
+                document.getElementById('result').textContent = error.message;
+              }
+            }
+          }
+        </script>
+        
+    </div>
+
+
+
+</body>

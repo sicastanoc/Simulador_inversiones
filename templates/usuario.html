@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Consume API</title>
+</head>
+<body>
+    <input type="text" id="nombreUsuario" placeholder="Enter Username">
+    <button onclick="getUser()">Get User</button>
+    <div id="result"></div>
+
+    <script>
+        async function getUser() {
+            const nombreUsuario = document.getElementById('nombreUsuario').value;
+            const url = `http://127.0.0.1:8000/users/${nombreUsuario}`;
+    
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                document.getElementById('result').textContent = JSON.stringify(data);
+            } catch (error) {
+                document.getElementById('result').textContent = error.message;
+            }
+        }
+    </script>
+</body>
+</html>

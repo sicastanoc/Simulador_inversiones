@@ -1,0 +1,69 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: 0; /* Posicionar a la derecha */
+    width: 140px; /* Ancho del sidebar */
+    height: 100vh; /* Altura del sidebar, ajustada al tamaño de la ventana */
+    background-color: #f0f0f0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.sidebar button {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+}
+
+.sidebar button:hover {
+    background-color: #2980b9;
+}
+/* Estilos globales */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+
+.container {
+    display: flex;
+    justify-content: space-between;/* Alinear al inicio verticalmente */
+    height: 100vh;
+    padding: 20px;
+}
+
+.left-div {
+    width: 350px; /* Aumenté el ancho para dar espacio a los widgets */
+    background-color: #f0f0f0;
+    padding: 20px;
+    margin-right: 20px; /* Espacio entre el sidebar y el contenido principal */
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    background-color: #ffffff;
+    margin-right: 200px;
+}
+
+.tradingview-widget-container {
+    margin-bottom: 10px; /* Espacio entre los widgets de TradingView */
+}
+
+.tradingview-widget-copyright {
+    font-size: 12px;
+    color: #666;
+    margin-top: 5px;
+}
+
+.blue-text {
+    color: blue;
+}

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operaciones</title>
+    <link rel="stylesheet" href="../static/css/styles_trading.css">
+</head>
+
+<body>
+
+    <!-- Barra lateral -->
+    <div class="sidebar">
+        <label>Seleccione una acción \n</label>
+        <select id="acciones" name="click">
+            <option value="BCOLOMBIA">BCOLOMBIA</option>
+            <option value="GRUPOSURA">GRUPOSURA</option>
+            <option value="NUTRESA">NUTRESA</option>
+            <option value="CEMARGOS">CEMARGOS</option>
+          </select>
+          <script>
+              document.querySelectorAll('#valueList li').forEach(item => {
+                  item.addEventListener('click', event => {
+                      alert(event.target.textContent);
+                  });
+              });
+          </script>
+        <label for="numero">Ingresa un cantidad de acciones a comprar o vender:</label><br>
+        <input type="number" id="numero" name="numero" min="1" max="100">
+        
+        <button id="buyBtn">Comprar</button>
+        <button id="sellBtn">Vender</button>
+        <button id="portfolioBtn">Portafolio</button>
+        <button id="logoutBtn">Cerrar sesión</button>
+    </div>
+
+    <!-- Contenedor principal -->
+    <div class="container">
+        <!-- Contenido a la izquierda -->
+        <div class="left-div">
+            <!-- Widget de TradingView 1 -->
+            <div class="tradingview-widget-container">
+                <div class="tradingview-widget-container__widget"></div>
+                <div class="tradingview-widget-copyright">
+                    <a href="https://es.tradingview.com/" rel="noopener nofollow" target="_blank">
+                        <span class="blue-text">Siga los mercados en TradingView</span>
+                    </a>
+                </div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+                    {
+                        "symbol": "BVC:BCOLOMBIA",
+                        "width": 350,
+                        "isTransparent": false,
+                        "colorTheme": "dark",
+                        "locale": "es"
+                    }
+                </script>
+            </div>
+
+            <!-- Widget de TradingView 2 -->
+            <div class="tradingview-widget-container">
+                <div class="tradingview-widget-container__widget"></div>
+                <div class="tradingview-widget-copyright">
+                    <a href="https://es.tradingview.com/" rel="noopener nofollow" target="_blank">
+                        <span class="blue-text">Siga los mercados en TradingView</span>
+                    </a>
+                </div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+                    {
+                        "symbol": "BVC:GRUPOSURA",
+                        "width": 350,
+                        "isTransparent": false,
+                        "colorTheme": "dark",
+                        "locale": "es"
+                    }
+                </script>
+            </div>
+
+            <!-- Widget de TradingView 3 -->
+            <div class="tradingview-widget-container">
+                <div class="tradingview-widget-container__widget"></div>
+                <div class="tradingview-widget-copyright">
+                    <a href="https://es.tradingview.com/" rel="noopener nofollow" target="_blank">
+                        <span class="blue-text">Siga los mercados en TradingView</span>
+                    </a>
+                </div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+                    {
+                        "symbol": "BVC:NUTRESA",
+                        "width": 350,
+                        "isTransparent": false,
+                        "colorTheme": "dark",
+                        "locale": "es"
+                    }
+                </script>
+            </div>
+
+            <!-- Widget de TradingView 4 -->
+            <div class="tradingview-widget-container">
+                <div class="tradingview-widget-container__widget"></div>
+                <div class="tradingview-widget-copyright">
+                    <a href="https://es.tradingview.com/" rel="noopener nofollow" target="_blank">
+                        <span class="blue-text">Siga los mercados en TradingView</span>
+                    </a>
+                </div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-single-quote.js" async>
+                    {
+                        "symbol": "BVC:CEMARGOS",
+                        "width": 350,
+                        "isTransparent": false,
+                        "colorTheme": "dark",
+                        "locale": "es"
+                    }
+                </script>
+            </div>
+        </div>
+
+        <!-- Contenido principal -->
+        <div class="main-content">
+            <!-- Widget de TradingView - Resumen de símbolos -->
+            <div class="tradingview-widget-container">
+                <div class="tradingview-widget-container__widget"></div>
+                <div class="tradingview-widget-copyright">
+                    <a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank">
+                        <span class="blue-text">Track all markets on TradingView</span>
+                    </a>
+                </div>
+                <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+                    {
+                        "symbols": [
+                            ["BVC:BCOLOMBIA|ALL"],
+                            ["BVC:NUTRESA|1D"],
+                            ["BVC:CEMARGOS|1D"],
+                            ["BVC:GRUPOSURA|1D"]
+                        ],
+                        "chartOnly": false,
+                        "width": "100%",
+                        "height": "100%",
+                        "locale": "en",
+                        "colorTheme": "dark",
+                        "autosize": true,
+                        "showVolume": false,
+                        "showMA": false,
+                        "hideDateRanges": false,
+                        "hideMarketStatus": false,
+                        "hideSymbolLogo": false,
+                        "scalePosition": "right",
+                        "scaleMode": "Normal",
+                        "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+                        "fontSize": "10",
+                        "noTimeScale": false,
+                        "valuesTracking": "1",
+                        "changeMode": "price-and-percent",
+                        "chartType": "area",
+                        "maLineColor": "#2962FF",
+                        "maLineWidth": 1,
+                        "maLength": 9,
+                        "lineWidth": 2,
+                        "lineType": 0,
+                        "dateRanges": [
+                            "1d|1",
+                            "1m|30",
+                            "3m|60",
+                            "12m|1D",
+                            "60m|1W",
+                            "all|1M"
+                        ]
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script para cerrar sesión -->
+    <script>
+        var logoutBtn = document.getElementById('logoutBtn');
+        logoutBtn.addEventListener('click', function () {
+            window.location.href = 'index.html'; // Redireccionar a la página de inicio
+        });
+    </script>
+</body>
+
+</html>
