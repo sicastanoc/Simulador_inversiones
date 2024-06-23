@@ -31,6 +31,13 @@ class Transaction(Base):
     cantidad = Column(Integer, index=True)
     TransactionDate = Column(default=datetime.now().strftime("%Y-%m-%d"))
 
+class Accion(Base):
+    __tablename__ = "acciones"
+
+    accion_id = Column(Integer, primary_key=True, index=True)
+    nombre_accion = Column(String, index=True)
+    nombre_abreviado = Column(String, index=True)
+
 Base.metadata.create_all(bind=engine)
 
 class UserBase(BaseModel):
@@ -61,6 +68,19 @@ class TransactionInDB(TransactionBase):
         orm_mode = True
 
 class TransactionCreate(TransactionBase):
+    pass
+
+class AccionBase(BaseModel):
+    nombre_accion: str
+    nombre_abreviado: str
+
+class AccionInDB(AccionBase):
+    accion_id: int
+
+    class Config:
+        orm_mode = True
+
+class AccionCreate(AccionBase):
     pass
 
 app = FastAPI()
@@ -111,3 +131,11 @@ def get_transactions(usuario_id: int, db: Session = Depends(get_db)):
     if not transactions:
         raise HTTPException(status_code=404, detail="No hay transacciones del usuario")
     return transactions
+
+@app.post("/acciones/", response_model=AccionInDB)
+def create_accion(accion: AccionCreate, db: Session = Depends(get_db)):
+    db_accion = Accion(**accion.dict())
+    db.add(db_accion)
+    db.commit()
+    db.refresh(db_accion)
+    return db_accion
