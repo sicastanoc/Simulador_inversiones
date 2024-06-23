@@ -1,0 +1,18 @@
+Crear ambien virtual llamado .venv:
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -U pip setuptools wheel
+python -m pip install -r requirements
+
+1. modificar el archivo contrab:
+    contrab -e 
+2. Elegir editor:
+    1 para nano (Es el mas sencillo)
+3. Agregar los horarios de ejecucion:
+    Recomiendo:
+    00 9 * * * ruta/ambiente/virtual ruta/archivo/main
+    00 12 * * * ruta/del/archivo
+    00 15 * * * ruta/del/archivo
+
+    ejemplo:
+    00 9 * * * /home/tacky/dev/yahoo-request/.venv/bin/python /home/tacky/dev/yahoo-request/main.py

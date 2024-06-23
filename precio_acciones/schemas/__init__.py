@@ -1,0 +1,1 @@
+from schemas.stocks import HistoryStock
