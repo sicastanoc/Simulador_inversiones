@@ -20,6 +20,7 @@ class User(Base):
     usuario_id = Column(Integer, primary_key=True, index=True)
     nombre_usuario = Column(String, index=True)
 
+
 class Transaction(Base):
     __tablename__ = "transacciones"
 
@@ -81,11 +82,12 @@ def get_db():
         db.close()
 
 @app.post("/users/", response_model=UserInDB)
-def create_user(usuario_id = int, db: Session = Depends(get_db)):
-    transactions = db.query(User).filter(User.usuario_id == usuario_id).all()
-    if not transactions:
-        raise HTTPException(status_code=404, detail="No hay transacciones del usuario")
-    return transactions
+def create_user(user: UserCreate, db: Session = Depends(get_db)):
+    db_user = User(**user.dict())
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
 
 @app.get("/users/{nombre_usuario}", response_model=List[UserInDB])
 def get_users(nombre_usuario: str, db: Session = Depends(get_db)):
