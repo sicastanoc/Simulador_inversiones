@@ -18,25 +18,25 @@ class User(Base):
     __tablename__ = "usuarios"
 
     usuario_id = Column(Integer, primary_key=True, index=True)
-    nombre_usuario = Column(String, index=True)
+    nombre_usuario = Column(String, index=True, nullable=False)
 
 
 class Transaction(Base):
     __tablename__ = "transacciones"
 
     transaccion_id = Column(Integer, primary_key=True, index=True)
-    usuario_id = Column(Integer, index=True)
-    accion_id = Column(Integer, index=True)
-    tipo_transaccion = Column(String, index=True)
-    cantidad = Column(Integer, index=True)
+    usuario_id = Column(Integer, index=True, nullable=False)
+    accion_id = Column(Integer, index=True, nullable=False)
+    tipo_transaccion = Column(String, index=True, nullable=False)
+    cantidad = Column(Integer, index=True, nullable=False)
     TransactionDate = Column(default=datetime.now().strftime("%Y-%m-%d"))
 
 class Accion(Base):
     __tablename__ = "acciones"
 
     accion_id = Column(Integer, primary_key=True, index=True)
-    nombre_accion = Column(String, index=True)
-    nombre_abreviado = Column(String, index=True)
+    nombre_accion = Column(String, index=True, nullable=False)
+    nombre_abreviado = Column(String, index=True, nullable=False)
 
 Base.metadata.create_all(bind=engine)
 
