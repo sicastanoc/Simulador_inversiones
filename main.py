@@ -103,6 +103,11 @@ def get_db():
 
 @app.post("/users/", response_model=UserInDB)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
+    # Verifica si el usuario ya existe en la base de datos
+    existing_user = db.query(User).filter(User.nombre_usuario == user.nombre_usuario).first()
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Nombre de usuario ya existe")
+
     db_user = User(**user.dict())
     db.add(db_user)
     db.commit()

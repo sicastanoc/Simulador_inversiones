@@ -28,16 +28,32 @@
                 },
                 body: JSON.stringify(data)
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 400) {
+                        throw new Error('Bad Request');
+                    } else {
+                        throw new Error('Network response was not ok');
+                    }
+                }
+                return response.json();
+            })
             .then(data => {
                 console.log('Success:', data);
                 document.getElementById('result').innerText = JSON.stringify(data, null, 2);
+                alert('Usuario creado correctamente');
             })
             .catch((error) => {
                 console.error('Error:', error);
                 document.getElementById('result').innerText = 'Error: ' + error;
+                if (error.message === 'Bad Request') {
+                    alert('Fallo al crear usuario: El nombre de usuario ya existe o los datos son inválidos.');
+                } else {
+                    alert('Error al crear usuario: ' + error.message);
+                }
             });
         });
     </script>
+    <a href="index.html" class="button">Volver al inicio</a>
 </body>
 </html>
