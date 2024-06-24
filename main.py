@@ -38,7 +38,6 @@ class Accion(Base):
     nombre_accion = Column(String, index=True, nullable=False)
     nombre_abreviado = Column(String, index=True, nullable=False)
 
-Base.metadata.create_all(bind=engine)
 
 class UserBase(BaseModel):
     nombre_usuario: str
@@ -82,6 +81,8 @@ class AccionInDB(AccionBase):
 
 class AccionCreate(AccionBase):
     pass
+
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
