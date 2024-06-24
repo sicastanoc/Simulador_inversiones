@@ -2,26 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Consume API</title>
+    <title>Crear Usuario</title>
 </head>
 <body>
     <input type="text" id="nombreUsuario" placeholder="Enter Username">
-    <button onclick="getUser()">Get User</button>
+    <button id="enviarSolicitudBtn">Crear usuario</button>
     <div id="result"></div>
-
     <script>
-        async function getUser() {
-            const nombreUsuario = document.getElementById('nombreUsuario').value;
-            const url = `http://127.0.0.1:8000/users/${nombreUsuario}`;
-    
-            try {
-                const response = await fetch(url);
-                const data = await response.json();
-                document.getElementById('result').textContent = JSON.stringify(data);
-            } catch (error) {
-                document.getElementById('result').textContent = error.message;
-            }
-        }
+        document.getElementById('enviarSolicitudBtn').addEventListener('click', function(event) {
+            event.preventDefault();
+            
+            // Obtiene el valor del input
+            var nombreUsuario = document.getElementById('nombreUsuario').value;
+
+            // Prepara el cuerpo de la solicitud con el texto extraído
+            var data = {
+                nombre_usuario: nombreUsuario
+            };
+
+            // Envía la solicitud POST a la API usando Fetch
+            fetch('http://127.0.0.1:8000/users/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                document.getElementById('result').innerText = JSON.stringify(data, null, 2);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                document.getElementById('result').innerText = 'Error: ' + error;
+            });
+        });
     </script>
 </body>
 </html>
