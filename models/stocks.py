@@ -6,8 +6,8 @@ from sqlalchemy.orm import Relationship
 class Stocks(Base):
     __tablename__ = 'acciones'
 
-    id = Column(Integer, primary_key=True)
-    nombre = Column(String)
+    accion_id = Column(Integer, primary_key=True)
+    nombre_accion = Column(String)
     nombre_abreviado = Column(String)
 
     def __init__(self, *args, **kwargs):
@@ -15,17 +15,17 @@ class Stocks(Base):
         super().__init__(*args, **kwargs)
 
     def __str__(self):
-        return f"Nombre accion: {self.nombre}, abreviatura: {self.nombre_abreviado}"
+        return f"Nombre accion: {self.nombre_accion}, abreviatura: {self.nombre_abreviado}"
     
     def __repr__(self):
-        return f"Nombre accion: {self.nombre}, abreviatura: {self.nombre_abreviado}"
+        return f"Nombre accion: {self.nombre_accion}, abreviatura: {self.nombre_abreviado}"
 
 
 class HistoryStocks(Base):
     __tablename__ = 'historia_acciones'
 
-    id = Column(Integer, primary_key=True)
-    accion_id = Column(Integer, ForeignKey('acciones.id'))
+    transaccion_id = Column(Integer, primary_key=True)
+    accion_id = Column(Integer, ForeignKey('acciones.accion_id'))
     fecha = Column(DateTime)
     precio = Column(Float)
 
@@ -38,7 +38,7 @@ class HistoryStocks(Base):
         super().__init__(*args, **kwargs)
 
     def __str__(self):
-        return f"Nombre accion: {self.stocks.nombre}, abreviatura: {self.precio}, fecha: {self.fecha}"
+        return f"Nombre accion: {self.stocks.nombre_accion}, abreviatura: {self.precio}, fecha: {self.fecha}"
     
     def __repr__(self):
-        return f"Nombre accion: {self.stocks.nombre}, abreviatura: {self.precio}, fecha: {self.fecha}"
+        return f"Nombre accion: {self.stocks.nombre_accion}, abreviatura: {self.precio}, fecha: {self.fecha}"

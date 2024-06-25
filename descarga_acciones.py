@@ -19,6 +19,7 @@ def main():
     db = Session()
 
     stock_list = StockServices(db).get_all_values()
+    print(stock_list)
 
     for stock in stock_list:
         
@@ -26,7 +27,7 @@ def main():
 
             res = RequestData.get_request(stock.nombre_abreviado)
 
-            last_value = HistoryStocksServices(db).get_value(stock.id)
+            last_value = HistoryStocksServices(db).get_value(stock.accion_id)
             print(last_value)
 
             market_time = datetime.fromtimestamp(res.get("regularMarketTime"))
@@ -41,10 +42,16 @@ def main():
                     logger.info("La info ya esta en la base de datos")
                     continue
 
+                else:
+                    HistoryStocksServices(db).create_value(value = HistoryStock(
+                        accion_id = stock.accion_id,
+                        fecha = market_time,
+                        precio = close
+                    ))
+                
             else:
-                print('llegue')
                 HistoryStocksServices(db).create_value(value = HistoryStock(
-                    accion_id = stock.id,
+                    accion_id = stock.accion_id,
                     fecha = market_time,
                     precio = close
                 ))
