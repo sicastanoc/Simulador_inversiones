@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException
-from sqlalchemy import create_engine, Column, Integer, String, func, DateTime, Float
+from sqlalchemy import create_engine, Column, Integer, String, func, DateTime, Float, ForeignKey
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.ext.declarative import declarative_base
 from pydantic import BaseModel
@@ -25,11 +25,11 @@ class Transaction(Base):
     __tablename__ = "transacciones"
 
     transaccion_id = Column(Integer, primary_key=True, index=True)
-    usuario_id = Column(Integer, index=True, nullable=False)
-    accion_id = Column(Integer, index=True, nullable=False)
+    usuario_id = Column(Integer, ForeignKey('usuarios.usuario_id'), index=True, nullable=False)
+    accion_id = Column(Integer,ForeignKey('acciones.accion_id'), index=True, nullable=False)
     tipo_transaccion = Column(String, index=True, nullable=False)
     cantidad = Column(Integer, index=True, nullable=False)
-    TransactionDate = Column(default=datetime.now().strftime("%Y-%m-%d"))
+    transaction_date = Column(DateTime, default=func.now())
 
 class Accion(Base):
     __tablename__ = "acciones"
@@ -42,7 +42,7 @@ class Historia_accion(Base):
     __tablename__ = "historia_acciones"
 
     transaccion_id = Column(Integer,primary_key=True,index=True, nullable=False)
-    accion_id = Column(Integer, nullable=False)
+    accion_id = Column(Integer,ForeignKey('acciones.accion_id'), nullable=False)
     fecha = Column(DateTime, index=True, nullable=False)
     precio = Column(Float, index=True, nullable=False)
 
@@ -101,6 +101,16 @@ class Historia_AccionBaseInDB(Historia_AccionBase):
 
     class Config:
         orm_mode = True
+
+class PrecioAccion(BaseModel):
+    accion_id: int
+    nombre_accion: str
+    nombre_abreviado: str
+    precio: float
+
+    class Config:
+        orm_mode = True
+
 
 
 Base.metadata.create_all(bind=engine)
@@ -167,10 +177,24 @@ def create_accion(accion: AccionCreate, db: Session = Depends(get_db)):
     db.refresh(db_accion)
     return db_accion
 
-@app.get("/acciones/{accion_id}", response_model=List[Historia_AccionBaseInDB])
+
+@app.get("/acciones/{accion_id}", response_model=List[PrecioAccion])
 def get_precion_accion(accion_id: int, db: Session = Depends(get_db)):
-    precio_accion = db.query(Historia_accion,Accion).filter(Historia_accion.accion_id == accion_id).filter(Accion.accion_id == accion_id).all()
-    if not precio_accion:
-        raise HTTPException(status_code=404, detail="No hay transacciones del usuario")
-    return precio_accion
+    # Realiza el join entre Historia_accion y Accion
+    resultado = db.query(
+        Historia_accion.accion_id,
+        Accion.nombre_accion,
+        Accion.nombre_abreviado,
+        Historia_accion.fecha,
+        Historia_accion.precio
+    ).join(
+        Accion, Historia_accion.accion_id == Accion.accion_id
+    ).filter(
+        Historia_accion.accion_id == accion_id
+    ).all()
+
+    if not resultado:
+        raise HTTPException(status_code=404, detail="No hay precios para esta acción")
+
+    return resultado
 
