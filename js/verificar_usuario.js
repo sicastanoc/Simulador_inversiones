@@ -11,12 +11,14 @@ async function enviarDatos() {
       if (!response.ok) {
           throw new Error('Usuario no encontrado');
       }
-      
-      // Si la respuesta es exitosa (código 200), redirigir a trading.html
-      window.location.href = 'trading.html';
+      const username = document.getElementById("nombreUsuario").value;
+
+      // Redireccionar a trading.html con el nombre de usuario como parámetro de consulta
+      window.location.href = `trading.html?username=${encodeURIComponent(username)}`;
       
   } catch (error) {
       // Capturar y manejar errores de la API
       document.getElementById('result').textContent = error.message;
   }
+
 }
