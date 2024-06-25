@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException
-from sqlalchemy import create_engine, Column, Integer, String, func
+from sqlalchemy import create_engine, Column, Integer, String, func, DateTime, Float
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.ext.declarative import declarative_base
 from pydantic import BaseModel
@@ -37,6 +37,14 @@ class Accion(Base):
     accion_id = Column(Integer, primary_key=True, index=True)
     nombre_accion = Column(String, index=True, nullable=False)
     nombre_abreviado = Column(String, index=True, nullable=False)
+
+class Historia_accion(Base):
+    __tablename__ = "historia_acciones"
+
+    transaccion_id = Column(Integer,primary_key=True,index=True, nullable=False)
+    accion_id = Column(Integer, nullable=False)
+    fecha = Column(DateTime, index=True, nullable=False)
+    precio = Column(Float, index=True, nullable=False)
 
 
 class UserBase(BaseModel):
@@ -81,6 +89,19 @@ class AccionInDB(AccionBase):
 
 class AccionCreate(AccionBase):
     pass
+
+class Historia_AccionBase(BaseModel):
+    accion_id: int
+
+class Historia_AccionBaseInDB(Historia_AccionBase):
+    accion_id: int
+    transaccion_id: int
+    fecha: datetime
+    precio: float
+
+    class Config:
+        orm_mode = True
+
 
 Base.metadata.create_all(bind=engine)
 
@@ -145,3 +166,11 @@ def create_accion(accion: AccionCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_accion)
     return db_accion
+
+@app.get("/acciones/{accion_id}", response_model=List[Historia_AccionBaseInDB])
+def get_precion_accion(accion_id: int, db: Session = Depends(get_db)):
+    precio_accion = db.query(Historia_accion).filter(Historia_accion.accion_id == accion_id).all()
+    if not precio_accion:
+        raise HTTPException(status_code=404, detail="No hay transacciones del usuario")
+    return precio_accion
+
