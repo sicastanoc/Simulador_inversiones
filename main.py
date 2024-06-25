@@ -169,7 +169,7 @@ def create_accion(accion: AccionCreate, db: Session = Depends(get_db)):
 
 @app.get("/acciones/{accion_id}", response_model=List[Historia_AccionBaseInDB])
 def get_precion_accion(accion_id: int, db: Session = Depends(get_db)):
-    precio_accion = db.query(Historia_accion).filter(Historia_accion.accion_id == accion_id).all()
+    precio_accion = db.query(Historia_accion,Accion).filter(Historia_accion.accion_id == accion_id).filter(Accion.accion_id == accion_id).all()
     if not precio_accion:
         raise HTTPException(status_code=404, detail="No hay transacciones del usuario")
     return precio_accion
