@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Operaciones</title>
     <link rel="stylesheet" href="../static/styles_trading.css">
-    <script src="../js/comprar_accion.js"></script>
+    <script src="../js/trading_js.js"></script>
 </head>
 
 <body>
@@ -40,12 +40,15 @@
                 });
             </script>
           </div>
-        <label for="numero">Ingresa un cantidad de acciones a comprar o vender:</label><br>
-        <input type="number" id="numero" name="numero" min="1" max="100">
+        <div class = 'inputCantidad'>
+            <label for="numero">Ingresa un cantidad de acciones a comprar o vender:</label><br>
+            <input type="number" id="numero" name="numero" min="1" max="100">
+        </div>
+
+        <button onclick= comprar_Accion() id="buyBtn">Comprar</button>
+        <button onclick= vender_Accion() id="sellBtn">Vender</button>
 
         <div class="listaBotones">
-            <button onclick= comprar_Accion() id="buyBtn">Comprar</button>
-            <button onclick= vender_Accion() id="sellBtn">Vender</button>
             <button onclick= ver_portafolio() id="portfolioBtn">Portafolio</button>
             <button onclick= cerrarSesion() id="logoutBtn">Cerrar sesión</button>
         </div>
