@@ -45,16 +45,21 @@ function nombreUsuario(){
 async function comprarAccion() {        
     // Obtiene el valor del input
     var nombreUsuario = document.getElementById('nombreUsuarioActivo').value;
+    console.log(nombreUsuario)
     var cantidadAcciones = document.getElementById('cantidadAcciones').value;
+    console.log(cantidadAcciones)
     var tipo_transaccion = 'Compra';
     var nombre_abreviado = document.getElementById('acciones').value;
+    console.log(nombre_abreviado)
+    var precio = 0;
 
     // Prepara el cuerpo de la solicitud con el texto extraído
     var data = {
         nombre_usuario: nombreUsuario,
-        accion_id: nombre_abreviado,
+        nombre_abreviado: nombre_abreviado,
         tipo_transaccion: tipo_transaccion,
-        cantidad: cantidadAcciones
+        cantidad: cantidadAcciones,
+        precio: precio
     };
 
     // Envía la solicitud POST a la API usando Fetch

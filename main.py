@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy import create_engine, Column, Integer, String, func, DateTime, Float, ForeignKey
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.ext.declarative import declarative_base
-from pydantic import BaseModel
+from pydantic import BaseModel,Field
 from datetime import datetime
 from typing import List
 from fastapi.middleware.cors import CORSMiddleware
@@ -29,7 +29,7 @@ class Transaction(Base):
     accion_id = Column(Integer,ForeignKey('acciones.accion_id'), index=True, nullable=False)
     tipo_transaccion = Column(String, index=True, nullable=False)
     cantidad = Column(Integer, index=True, nullable=False)
-    transaction_date = Column(DateTime, default=func.now())
+    TransactionDate = Column(DateTime, default=func.now())
 
 class Accion(Base):
     __tablename__ = "acciones"
@@ -67,14 +67,21 @@ class TransactionBase(BaseModel):
     accion_id: int
     tipo_transaccion: str
     cantidad: int
-
-class TransactionInDB(TransactionBase):
-    transaccion_id: int
+    TransactionDate: datetime = Field(default_factory=datetime.now)
 
     class Config:
         orm_mode = True
 
-class TransactionCreate(TransactionBase):
+class TransactionInDB(TransactionBase):
+    class Config:
+        orm_mode = True
+
+class TransactionCreate(BaseModel):
+    nombre_usuario: str
+    cantidad: int
+    tipo_transaccion: str
+    nombre_abreviado: str
+    precio: float
     pass
 
 class AccionBase(BaseModel):
@@ -133,6 +140,7 @@ def get_db():
     finally:
         db.close()
 
+#Crear un usuario
 @app.post("/users/", response_model=UserInDB)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     # Verifica si el usuario ya existe en la base de datos
@@ -146,6 +154,7 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db.refresh(db_user)
     return db_user
 
+#Obtener informacion del usuario
 @app.get("/users/{nombre_usuario}", response_model=List[UserInDB])
 def get_users(nombre_usuario: str, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.nombre_usuario == nombre_usuario).all()
@@ -154,14 +163,30 @@ def get_users(nombre_usuario: str, db: Session = Depends(get_db)):
     return user
 
 
-@app.post("/transactions/", response_model=TransactionInDB)
+#Compra y venta de acciones
+@app.post("/transactions/")
 def create_transaction(transaction: TransactionCreate, db: Session = Depends(get_db)):
-    db_transaction = Transaction(**transaction.dict())
-    db.add(db_transaction)
-    db.commit()
-    db.refresh(db_transaction)
-    return db_transaction
+    accion_id = db.query(Accion).filter(Accion.nombre_abreviado == transaction.nombre_abreviado).first().accion_id
+    precio= db.query(Historia_accion).filter(Historia_accion.accion_id == accion_id).first().precio
+    usuario_id = db.query(User).filter(User.nombre_usuario == transaction.nombre_usuario).first().usuario_id
 
+    crear_transaccion = TransactionInDB(
+        accion_id=accion_id,
+        usuario_id=usuario_id,
+        tipo_transaccion=transaction.tipo_transaccion,
+        cantidad=transaction.cantidad
+    )
+
+    db_transaccion = Transaction(**crear_transaccion.model_dump())
+    db.add(db_transaccion)
+    db.commit()
+    db.refresh(db_transaccion)
+    return db_transaccion
+
+
+
+
+#Obtener transacciones
 @app.get("/transactions/{usuario_id}", response_model=List[TransactionInDB])
 def get_transactions(usuario_id: int, db: Session = Depends(get_db)):
     transactions = db.query(Transaction).filter(Transaction.usuario_id == usuario_id).all()
@@ -169,6 +194,7 @@ def get_transactions(usuario_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="No hay transacciones del usuario")
     return transactions
 
+#Crear una accion
 @app.post("/acciones/", response_model=AccionInDB)
 def create_accion(accion: AccionCreate, db: Session = Depends(get_db)):
     db_accion = Accion(**accion.dict())
@@ -178,6 +204,9 @@ def create_accion(accion: AccionCreate, db: Session = Depends(get_db)):
     return db_accion
 
 
+
+
+#Obtener precio de una a
 @app.get("/acciones/{accion_id}", response_model=List[PrecioAccion])
 def get_precion_accion(accion_id: int, db: Session = Depends(get_db)):
     # Realiza el join entre Historia_accion y Accion
