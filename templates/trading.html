@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Operaciones</title>
     <link rel="stylesheet" href="../static/styles_trading.css">
+    <script src="../js/comprar_accion.js"></script>
 </head>
 
 <body>
@@ -33,7 +34,7 @@
         <button onclick= comprar_Accion() id="buyBtn">Comprar</button>
         <button onclick= vender_Accion() id="sellBtn">Vender</button>
         <button onclick= ver_portafolio() id="portfolioBtn">Portafolio</button>
-        <button id="logoutBtn">Cerrar sesión</button>
+        <button id="logoutBtn" class = 'cerrarSesion'>Cerrar sesión</button>
 
     </div>
 
@@ -41,293 +42,65 @@
     <div class="container">
         <!-- Contenido a la izquierda -->
         <div class="left-div">
-            <p id="welcomeMessage"></p>
-            <script src="../js/mensaje_bienvenida.js"></script>
-
-            <div class="containerBancolombia">
+            <div class="containerAcciones">
                 <div id="precioBancolombia"></div>
             </div>  
-        
-            <script>
-                // Función para obtener y mostrar los precios de las acciones
-                async function mostrarPrecios() {
-                    const response = await fetch('http://127.0.0.1:8000/acciones/1'); // Reemplaza {accion_id} con el ID de la acción específica
-                    const data = await response.json();
-        
-                    const preciosContainer = document.getElementById('precioBancolombia');
-                    preciosContainer.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevos datos
-        
-                    data.forEach(precio => {
-                        const precioHTML = `
-                            <div class="precio-item">
-                                <h5>${precio.nombre_accion} (${precio.nombre_abreviado})</h5>
-                                <p>Precio: ${precio.precio}</p>
-                            </div>
-                        `;
-                        preciosContainer.innerHTML += precioHTML;
-                    });
-                }
-        
-                // Llamar a la función al cargar la página
-                mostrarPrecios();
-            </script>
+            <script>mostrarPrecios(1,'precioBancolombia')</script>
 
-            <div class="containerSura">
-                <div id="precioSura"></div>
-            </div>  
-
-            <script>
-                // Función para obtener y mostrar los precios de las acciones
-                async function mostrarPrecios() {
-                    const response = await fetch('http://127.0.0.1:8000/acciones/10'); // Reemplaza {accion_id} con el ID de la acción específica
-                    const data = await response.json();
-
-                    const preciosContainer = document.getElementById('precioSura');
-                    preciosContainer.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevos datos
-
-                    data.forEach(precio => {
-                        const precioHTML = `
-                            <div class="precio-item">
-                                <h5>${precio.nombre_accion} (${precio.nombre_abreviado})</h5>
-                                <p>Precio: ${precio.precio}</p>
-                            </div>
-                        `;
-                        preciosContainer.innerHTML += precioHTML;
-                    });
-                }
-
-                // Llamar a la función al cargar la página
-                mostrarPrecios();
-            </script>
-
-            <div class="containerArgos">
-                <div id="precioArgos"></div>
-            </div>  
-
-            <script>
-                // Función para obtener y mostrar los precios de las acciones
-                async function mostrarPrecios() {
-                    const response = await fetch('http://127.0.0.1:8000/acciones/3'); // Reemplaza {accion_id} con el ID de la acción específica
-                    const data = await response.json();
-
-                    const preciosContainer = document.getElementById('precioArgos');
-                    preciosContainer.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevos datos
-
-                    data.forEach(precio => {
-                        const precioHTML = `
-                            <div class="precio-item">
-                                <h5>${precio.nombre_accion} (${precio.nombre_abreviado})</h5>
-                                <p>Precio: ${precio.precio}</p>
-                            </div>
-                        `;
-                        preciosContainer.innerHTML += precioHTML;
-                    });
-                }
-
-                // Llamar a la función al cargar la página
-                mostrarPrecios();
-            </script>
-
-            <div class="containerIsa">
-                <div id="precioISA"></div>
-            </div>  
-
-            <script>
-                // Función para obtener y mostrar los precios de las acciones
-                async function mostrarPrecios() {
-                    const response = await fetch('http://127.0.0.1:8000/acciones/4'); // Reemplaza {accion_id} con el ID de la acción específica
-                    const data = await response.json();
-
-                    const preciosContainer = document.getElementById('precioISA');
-                    preciosContainer.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevos datos
-
-                    data.forEach(precio => {
-                        const precioHTML = `
-                            <div class="precio-item">
-                                <h5>${precio.nombre_accion} (${precio.nombre_abreviado})</h5>
-                                <p>Precio: ${precio.precio}</p>
-                            </div>
-                        `;
-                        preciosContainer.innerHTML += precioHTML;
-                    });
-                }
-
-                // Llamar a la función al cargar la página
-                mostrarPrecios();
-            </script>
-
-            <div class="containerEcopetrol">
-                <div id="precioEcopetrol"></div>
-            </div>  
-
-            <script>
-                // Función para obtener y mostrar los precios de las acciones
-                async function mostrarPrecios() {
-                    const response = await fetch('http://127.0.0.1:8000/acciones/5'); // Reemplaza {accion_id} con el ID de la acción específica
-                    const data = await response.json();
-
-                    const preciosContainer = document.getElementById('precioEcopetrol');
-                    preciosContainer.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevos datos
-
-                    data.forEach(precio => {
-                        const precioHTML = `
-                            <div class="precio-item">
-                                <h5>${precio.nombre_accion} (${precio.nombre_abreviado})</h5>
-                                <p>Precio: ${precio.precio}</p>
-                            </div>
-                        `;
-                        preciosContainer.innerHTML += precioHTML;
-                    });
-                }
-
-                // Llamar a la función al cargar la página
-                mostrarPrecios();
-            </script>
-
-            <div class="containerEnergiaBogota">
+            <div class="containerAcciones">
                 <div id="precioEnergiaBogota"></div>
             </div>  
+            <script>mostrarPrecios(2,'precioEnergiaBogota')</script>
 
-            <script>
-                // Función para obtener y mostrar los precios de las acciones
-                async function mostrarPrecios() {
-                    const response = await fetch('http://127.0.0.1:8000/acciones/2'); // Reemplaza {accion_id} con el ID de la acción específica
-                    const data = await response.json();
+            <div class="containerAcciones">
+                <div id="precioArgos"></div>
+            </div>  
+            <script>mostrarPrecios(3,'precioArgos')</script>
 
-                    const preciosContainer = document.getElementById('precioEnergiaBogota');
-                    preciosContainer.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevos datos
+            <div class="containerAcciones">
+                <div id="precioISA"></div>
+            </div>  
+            <script>mostrarPrecios(4,'precioISA')</script>
 
-                    data.forEach(precio => {
-                        const precioHTML = `
-                            <div class="precio-item">
-                                <h5>${precio.nombre_accion} (${precio.nombre_abreviado})</h5>
-                                <p>Precio: ${precio.precio}</p>
-                            </div>
-                        `;
-                        preciosContainer.innerHTML += precioHTML;
-                    });
-                }
+            <div class="containerAcciones">
+                <div id="precioEcopetrol"></div>
+            </div>  
+            <script>mostrarPrecios(5,'precioEcopetrol')</script>
 
-                // Llamar a la función al cargar la página
-                mostrarPrecios();
-            </script>
-
-            <div class="containerCelsia">
+            <div class="containerAcciones">
                 <div id="precioCelsia"></div>
             </div>  
+            <script>mostrarPrecios(6,'precioCelsia')</script>
 
-            <script>
-                // Función para obtener y mostrar los precios de las acciones
-                async function mostrarPrecios() {
-                    const response = await fetch('http://127.0.0.1:8000/acciones/6'); // Reemplaza {accion_id} con el ID de la acción específica
-                    const data = await response.json();
 
-                    const preciosContainer = document.getElementById('precioCelsia');
-                    preciosContainer.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevos datos
-
-                    data.forEach(precio => {
-                        const precioHTML = `
-                            <div class="precio-item">
-                                <h5>${precio.nombre_accion} (${precio.nombre_abreviado})</h5>
-                                <p>Precio: ${precio.precio}</p>
-                            </div>
-                        `;
-                        preciosContainer.innerHTML += precioHTML;
-                    });
-                }
-
-                // Llamar a la función al cargar la página
-                mostrarPrecios();
-            </script>
-
-            <div class="containerAval">
+            <div class="containerAcciones">
                 <div id="precioAval"></div>
             </div>  
+            <script>mostrarPrecios(7,'precioAval')</script>
 
-            <script>
-                // Función para obtener y mostrar los precios de las acciones
-                async function mostrarPrecios() {
-                    const response = await fetch('http://127.0.0.1:8000/acciones/7'); // Reemplaza {accion_id} con el ID de la acción específica
-                    const data = await response.json();
 
-                    const preciosContainer = document.getElementById('precioAval');
-                    preciosContainer.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevos datos
-
-                    data.forEach(precio => {
-                        const precioHTML = `
-                            <div class="precio-item">
-                                <h5>${precio.nombre_accion} (${precio.nombre_abreviado})</h5>
-                                <p>Precio: ${precio.precio}</p>
-                            </div>
-                        `;
-                        preciosContainer.innerHTML += precioHTML;
-                    });
-                }
-
-                // Llamar a la función al cargar la página
-                mostrarPrecios();
-            </script>
-
-            <div class="containerExito">
+            <div class="containerAcciones">
                 <div id="precioExito"></div>
             </div>  
+            <script>mostrarPrecios(8,'precioExito')</script>
 
-            <script>
-                // Función para obtener y mostrar los precios de las acciones
-                async function mostrarPrecios() {
-                    const response = await fetch('http://127.0.0.1:8000/acciones/8'); // Reemplaza {accion_id} con el ID de la acción específica
-                    const data = await response.json();
 
-                    const preciosContainer = document.getElementById('precioExito');
-                    preciosContainer.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevos datos
-
-                    data.forEach(precio => {
-                        const precioHTML = `
-                            <div class="precio-item">
-                                <h5>${precio.nombre_accion} (${precio.nombre_abreviado})</h5>
-                                <p>Precio: ${precio.precio}</p>
-                            </div>
-                        `;
-                        preciosContainer.innerHTML += precioHTML;
-                    });
-                }
-
-                // Llamar a la función al cargar la página
-                mostrarPrecios();
-            </script>
-
-            <div class="containerConficolombiana">
+            <div class="containerAcciones">
                 <div id="precioCorficolombiana"></div>
             </div>  
+            <script>mostrarPrecios(9,'precioCorficolombiana')</script>
 
-            <script>
-                // Función para obtener y mostrar los precios de las acciones
-                async function mostrarPrecios() {
-                    const response = await fetch('http://127.0.0.1:8000/acciones/9'); // Reemplaza {accion_id} con el ID de la acción específica
-                    const data = await response.json();
-
-                    const preciosContainer = document.getElementById('precioCorficolombiana');
-                    preciosContainer.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevos datos
-
-                    data.forEach(precio => {
-                        const precioHTML = `
-                            <div class="precio-item">
-                                <h5>${precio.nombre_accion} (${precio.nombre_abreviado})</h5>
-                                <p>Precio: ${precio.precio}</p>
-                            </div>
-                        `;
-                        preciosContainer.innerHTML += precioHTML;
-                    });
-                }
-
-                // Llamar a la función al cargar la página
-                mostrarPrecios();
-            </script>
+            <div class="containerAcciones">
+                <div id="precioSura"></div>
+            </div>  
+            <script>mostrarPrecios(10,'precioSura')</script>
 
         </div>
 
         <!-- Contenido principal -->
         <div class="main-content">
+            <p id="welcomeMessage"></p>
+            <script src="../js/mensaje_bienvenida.js"></script>
             <!-- Widget de TradingView - Resumen de símbolos -->
             <div class="tradingview-widget-container">
                 <div class="tradingview-widget-container__widget"></div>
@@ -340,9 +113,15 @@
                     {
                         "symbols": [
                             ["BVC:BCOLOMBIA|ALL"],
-                            ["BVC:NUTRESA|1D"],
-                            ["BVC:CEMARGOS|1D"],
-                            ["BVC:GRUPOSURA|1D"]
+                            ["BVC:GEB|ALL"],
+                            ["BVC:GRUPOARGOS|ALL"],
+                            ["BVC:ISA|ALL"],
+                            ["BVC:ECOPETROL|ALL"],
+                            ["BVC:CELSIA|ALL"],
+                            ["BVC:PFAVAL|ALL"],
+                            ["BVC:EXITO|ALL"],
+                            ["BVC:CORFICOLCF|ALL"],
+                            ["BVC:GRUPOSURA|ALL"]
                         ],
                         "chartOnly": false,
                         "width": "100%",

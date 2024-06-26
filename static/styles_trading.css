@@ -67,3 +67,28 @@ body {
 .blue-text {
     color: blue;
 }
+
+.containerAcciones {
+    max-width: 450px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    height: 5vh;
+}
+
+
+.precio-item h5 {
+    margin-top: 0;
+    color: #007bff;
+    font-size: 0.85rem;
+}
+
+.precio-item p {
+    margin-bottom: 300px;
+}
+
+.cerrarSesion {
+    margin-bottom: 20px;
+}
