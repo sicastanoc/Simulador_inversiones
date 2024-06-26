@@ -6,15 +6,13 @@ async function mostrarPrecios(accion_id,id_precio_accion) {
     const preciosContainer = document.getElementById(`${id_precio_accion}`);
     preciosContainer.innerHTML = ''; // Limpiar el contenedor antes de agregar nuevos datos
 
-    data.forEach(precio => {
-        const precioHTML = `
-            <div class="precio-item">
-                <h5>${precio.nombre_accion} (${precio.nombre_abreviado}) </h5>
-                <p>Precio: ${precio.precio}</p>
-            </div>
-        `;
-        preciosContainer.innerHTML += precioHTML;
-    });
+    const precioHTML = `
+    <div class="precio-item">
+        <h5>${data.nombre_accion} (${data.nombre_abreviado}) </h5>
+        <p>Precio: ${data.precio}</p>
+    </div>`;
+    preciosContainer.innerHTML += precioHTML;
+    
 }
 
 // Función para obtener y mostrar los precios de las acciones
@@ -28,12 +26,12 @@ function cerrarSesion() {
     });
 }
 
+function getParameterByName(name) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(name);
+}
+
 function nombreUsuario(){
-    // Función para obtener el valor del parámetro de consulta 'username' de la URL
-    function getParameterByName(name) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(name);
-    }
 
     // Obtener el nombre de usuario de la URL
     const username = getParameterByName('username');
@@ -44,9 +42,9 @@ function nombreUsuario(){
 
 async function comprarAccion() {        
     // Obtiene el valor del input
-    var nombreUsuario = document.getElementById('nombreUsuarioActivo').value;
+    const nombreUsuario = getParameterByName('username');
     console.log(nombreUsuario)
-    var cantidadAcciones = document.getElementById('cantidadAcciones').value;
+    var cantidadAcciones = document.getElementById('numero').value;
     console.log(cantidadAcciones)
     var tipo_transaccion = 'Compra';
     var nombre_abreviado = document.getElementById('acciones').value;
@@ -98,17 +96,22 @@ async function comprarAccion() {
 
 async function venderAccion() {        
     // Obtiene el valor del input
-    var nombreUsuario = document.getElementById('nombreUsuarioActivo').value;
-    var cantidadAcciones = document.getElementById('cantidadAcciones').value;
+    const nombreUsuario = getParameterByName('username');
+    console.log(nombreUsuario)
+    var cantidadAcciones = document.getElementById('numero').value;
+    console.log(cantidadAcciones)
     var tipo_transaccion = 'Venta';
     var nombre_abreviado = document.getElementById('acciones').value;
+    console.log(nombre_abreviado)
+    var precio = 0;
 
     // Prepara el cuerpo de la solicitud con el texto extraído
     var data = {
         nombre_usuario: nombreUsuario,
-        accion_id: nombre_abreviado,
+        nombre_abreviado: nombre_abreviado,
         tipo_transaccion: tipo_transaccion,
-        cantidad: cantidadAcciones
+        cantidad: cantidadAcciones,
+        precio: precio
     };
 
     // Envía la solicitud POST a la API usando Fetch

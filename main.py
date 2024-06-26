@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException
-from sqlalchemy import create_engine, Column, Integer, String, func, DateTime, Float, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, func, DateTime, Float, ForeignKey,desc
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.ext.declarative import declarative_base
 from pydantic import BaseModel,Field
@@ -207,7 +207,7 @@ def create_accion(accion: AccionCreate, db: Session = Depends(get_db)):
 
 
 #Obtener precio de una a
-@app.get("/acciones/{accion_id}", response_model=List[PrecioAccion])
+@app.get("/acciones/{accion_id}", response_model=PrecioAccion)
 def get_precion_accion(accion_id: int, db: Session = Depends(get_db)):
     # Realiza el join entre Historia_accion y Accion
     resultado = db.query(
@@ -220,7 +220,9 @@ def get_precion_accion(accion_id: int, db: Session = Depends(get_db)):
         Accion, Historia_accion.accion_id == Accion.accion_id
     ).filter(
         Historia_accion.accion_id == accion_id
-    ).all()
+    ).order_by(desc(Historia_accion.fecha)
+    ).first()
+
 
     if not resultado:
         raise HTTPException(status_code=404, detail="No hay precios para esta acción")
