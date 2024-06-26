@@ -2,7 +2,7 @@
     position: fixed;
     top: 0;
     right: 0; /* Posicionar a la derecha */
-    width: 140px; /* Ancho del sidebar */
+    width: 160px; /* Ancho del sidebar */
     height: 100vh; /* Altura del sidebar, ajustada al tamaño de la ventana */
     background-color: #f0f0f0;
     padding: 20px;
@@ -115,4 +115,18 @@ body {
 .inputCantidad{
     margin-top: 15px;
     margin-bottom: 15px;
+}
+
+.listaBotones button {
+    display: block;
+    width: 100%;
+    padding: 10px 0;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
 }
