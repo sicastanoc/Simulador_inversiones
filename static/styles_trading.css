@@ -13,7 +13,7 @@
     display: block;
     width: 100%;
     padding: 10px 0;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     text-align: center;
     font-size: 16px;
     cursor: pointer;
@@ -21,6 +21,10 @@
     color: #fff;
     border: none;
     border-radius: 5px;
+}
+
+.sidebar label {
+    margin-bottom: 20px;
 }
 
 .sidebar button:hover {
@@ -64,9 +68,6 @@ body {
     margin-top: 5px;
 }
 
-.blue-text {
-    color: blue;
-}
 
 .containerAcciones {
     max-width: 450px;
@@ -91,4 +92,23 @@ body {
 
 .cerrarSesion {
     margin-bottom: 20px;
+}
+
+.nombreUsuarioActivo{
+    color: #007bff;
+    font-size: 1.2rem;
+    font-weight: 100;
+}
+
+.listaAcciones{
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.listaBotones{
+    position: fixed;
+    bottom: 0;
+
+    margin-top: 15px;
+    margin-bottom: 15px;
 }

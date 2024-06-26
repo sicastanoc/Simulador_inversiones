@@ -14,27 +14,41 @@
 
     <!-- Barra lateral -->
     <div class="sidebar">
-        <label>Seleccione una acción \n</label>
-        <select id="acciones" name="click">
-            <option value="BCOLOMBIA">BCOLOMBIA</option>
-            <option value="GRUPOSURA">GRUPOSURA</option>
-            <option value="NUTRESA">NUTRESA</option>
-            <option value="CEMARGOS">CEMARGOS</option>
-          </select>
-          <script>
-              document.querySelectorAll('#valueList li').forEach(item => {
-                  item.addEventListener('click', event => {
-                      alert(event.target.textContent);
-                  });
-              });
-          </script>
+        <h3>Usuario Activo:</h3>
+        <p id="nombreUsuarioActivo" class = 'nombreUsuarioActivo'></p>
+        <script src="../js/mensaje_bienvenida.js"></script>
+
+        <div class="listaAcciones">
+        <label>Seleccione una acción</label>
+            <select id="acciones" name="click">
+                <option value="BCOLOMBIA">BCOLOMBIA</option>
+                <option value="GEB">GEB</option>
+                <option value="GRUPOARGOS">GRUPOARGOS</option>
+                <option value="ISA">ISA</option>
+                <option value="ECOPETROL">ECOPETROL</option>
+                <option value="CELSIA">CELSIA</option>
+                <option value="PFAVAL">PFAVAL</option>
+                <option value="EXITO">EXITO</option>
+                <option value="CORFICOLCF">CORFICOLCF</option>
+                <option value="GRUPOSURA">GRUPOSURA</option>
+            </select>
+            <script>
+                document.querySelectorAll('#valueList li').forEach(item => {
+                    item.addEventListener('click', event => {
+                        alert(event.target.textContent);
+                    });
+                });
+            </script>
+          </div>
         <label for="numero">Ingresa un cantidad de acciones a comprar o vender:</label><br>
         <input type="number" id="numero" name="numero" min="1" max="100">
-        
-        <button onclick= comprar_Accion() id="buyBtn">Comprar</button>
-        <button onclick= vender_Accion() id="sellBtn">Vender</button>
-        <button onclick= ver_portafolio() id="portfolioBtn">Portafolio</button>
-        <button id="logoutBtn" class = 'cerrarSesion'>Cerrar sesión</button>
+
+        <div class="listaBotones">
+            <button onclick= comprar_Accion() id="buyBtn">Comprar</button>
+            <button onclick= vender_Accion() id="sellBtn">Vender</button>
+            <button onclick= ver_portafolio() id="portfolioBtn">Portafolio</button>
+            <button onclick= cerrarSesion() id="logoutBtn">Cerrar sesión</button>
+        </div>
 
     </div>
 
@@ -99,8 +113,6 @@
 
         <!-- Contenido principal -->
         <div class="main-content">
-            <p id="welcomeMessage"></p>
-            <script src="../js/mensaje_bienvenida.js"></script>
             <!-- Widget de TradingView - Resumen de símbolos -->
             <div class="tradingview-widget-container">
                 <div class="tradingview-widget-container__widget"></div>
@@ -161,13 +173,6 @@
         </div>
     </div>
 
-    <!-- Script para cerrar sesión -->
-    <script>
-        var logoutBtn = document.getElementById('logoutBtn');
-        logoutBtn.addEventListener('click', function () {
-            window.location.href = 'index.html'; // Redireccionar a la página de inicio
-        });
-    </script>
 
     
 </body>

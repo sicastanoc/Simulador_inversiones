@@ -16,3 +16,14 @@ async function mostrarPrecios(accion_id,id_precio_accion) {
         preciosContainer.innerHTML += precioHTML;
     });
 }
+
+// Función para obtener y mostrar los precios de las acciones
+function cerrarSesion() {
+    var logoutBtn = document.getElementById('logoutBtn');
+    logoutBtn.addEventListener('click', function () {
+        window.location.href = 'index.html'; // Redireccionar a la página de inicio
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+        cerrarSesion();
+    });
+}

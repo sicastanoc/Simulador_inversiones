@@ -8,4 +8,4 @@ function getParameterByName(name) {
 const username = getParameterByName('username');
 
 // Mostrar el mensaje de bienvenida
-document.getElementById('welcomeMessage').textContent = `Bienvenido ${username}`;
+document.getElementById('nombreUsuarioActivo').textContent = `${username}`;
