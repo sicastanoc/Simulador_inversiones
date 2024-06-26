@@ -9,11 +9,9 @@
     <button id="enviarSolicitudBtn">Crear usuario</button>
     <div id="result"></div>
     <script>
-        document.getElementById('enviarSolicitudBtn').addEventListener('click', function(event) {
-            event.preventDefault();
             
             // Obtiene el valor del input
-            var nombreUsuario = document.getElementById('nombreUsuario').value;
+            var nombreUsuario = document.getElementById('acciones').value;
 
             // Prepara el cuerpo de la solicitud con el texto extraído
             var data = {

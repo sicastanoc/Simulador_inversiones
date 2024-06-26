@@ -16,11 +16,11 @@
     <div class="sidebar">
         <h3>Usuario Activo:</h3>
         <p id="nombreUsuarioActivo" class = 'nombreUsuarioActivo'></p>
-        <script src="../js/mensaje_bienvenida.js"></script>
+        <script>nombreUsuario()</script>
 
         <div class="listaAcciones">
         <label>Seleccione una acción</label>
-            <select id="acciones" name="click">
+            <select id="acciones"  name="click">
                 <option value="BCOLOMBIA">BCOLOMBIA</option>
                 <option value="GEB">GEB</option>
                 <option value="GRUPOARGOS">GRUPOARGOS</option>
@@ -40,13 +40,13 @@
                 });
             </script>
           </div>
-        <div class = 'inputCantidad'>
+        <div id= 'cantidadAcciones' class = 'inputCantidad'>
             <label for="numero">Ingresa un cantidad de acciones a comprar o vender:</label><br>
             <input type="number" id="numero" name="numero" min="1" max="100">
         </div>
 
-        <button onclick= comprar_Accion() id="buyBtn">Comprar</button>
-        <button onclick= vender_Accion() id="sellBtn">Vender</button>
+        <button onclick= comprarAccion() id="buyBtn">Comprar</button>
+        <button onclick= venderAccion() id="sellBtn">Vender</button>
 
         <div class="listaBotones">
             <button onclick= ver_portafolio() id="portfolioBtn">Portafolio</button>
