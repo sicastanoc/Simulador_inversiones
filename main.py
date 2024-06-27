@@ -3,7 +3,7 @@ from sqlalchemy import create_engine, Column, Integer, String, func, DateTime, F
 from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.ext.declarative import declarative_base
 from pydantic import BaseModel,Field
-from datetime import datetime
+from datetime import datetime, date
 from typing import List
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -123,6 +123,13 @@ class PrecioAccion(BaseModel):
 
     class Config:
         orm_mode = True
+
+class TransactionResponse(BaseModel):
+    TransactionDate: datetime
+    tipo_transaccion: str
+    cantidad: int
+    precio: float
+    nombre_accion: str
 
 
 
@@ -251,12 +258,29 @@ def create_transaction(transaction: TransactionCreate, db: Session = Depends(get
 
 
 #Obtener transacciones
-@app.get("/transactions/{usuario_id}", response_model=List[TransactionInDB])
+# @app.get("/transactions/{usuario_id}", response_model=List[TransactionInDB])
+# def get_transactions(usuario_id: int, db: Session = Depends(get_db)):
+#     transactions = db.query(Transaction).filter(Transaction.usuario_id == usuario_id).all()
+#     if not transactions:
+#         raise HTTPException(status_code=404, detail="No hay transacciones del usuario")
+#     return transactions
+
+@app.get("/transactions/{usuario_id}", response_model=List[TransactionResponse])
 def get_transactions(usuario_id: int, db: Session = Depends(get_db)):
-    transactions = db.query(Transaction).filter(Transaction.usuario_id == usuario_id).all()
+    transactions = db.query(
+        Transaction.TransactionDate,
+        Transaction.tipo_transaccion,
+        Transaction.cantidad,
+        Transaction.precio,
+        Accion.nombre_abreviado.label("nombre_accion")
+    ).join(Accion, Transaction.accion_id == Accion.accion_id).filter(Transaction.usuario_id == usuario_id).all()
+
     if not transactions:
         raise HTTPException(status_code=404, detail="No hay transacciones del usuario")
+    
     return transactions
+
+
 
 #Crear una accion
 @app.post("/acciones/", response_model=AccionInDB)

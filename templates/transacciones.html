@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla de Transacciones</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>Transacciones del Usuario</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Tipo de Transacción</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Nombre de la Acción</th>
+            </tr>
+        </thead>
+        <tbody id="transactions-body">
+            <!-- Las filas de transacciones se agregarán aquí mediante JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        // Función para formatear la fecha
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            return date.toLocaleDateString(undefined, options);
+        }
+
+        // Función para cargar las transacciones desde el API
+        async function loadTransactions(usuarioId) {
+            const response = await fetch(`http://127.0.0.1:8000/transactions/${usuarioId}`);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const transactions = await response.json();
+            const tbody = document.getElementById('transactions-body');
+            tbody.innerHTML = ''; // Limpiar el contenido existente
+
+            transactions.forEach(transaction => {
+                const row = document.createElement('tr');
+
+                const cellFecha = document.createElement('td');
+                cellFecha.textContent = formatDate(transaction.TransactionDate);
+                row.appendChild(cellFecha);
+
+                const cellTipo = document.createElement('td');
+                cellTipo.textContent = transaction.tipo_transaccion;
+                row.appendChild(cellTipo);
+
+                const cellCantidad = document.createElement('td');
+                cellCantidad.textContent = transaction.cantidad;
+                row.appendChild(cellCantidad);
+
+                const cellPrecio = document.createElement('td');
+                cellPrecio.textContent = transaction.precio;
+                row.appendChild(cellPrecio);
+
+                const cellNombreAccion = document.createElement('td');
+                cellNombreAccion.textContent = transaction.nombre_accion;
+                row.appendChild(cellNombreAccion);
+
+                tbody.appendChild(row);
+            });
+        }
+
+        // Cargar las transacciones para un usuario específico al cargar la página
+        document.addEventListener('DOMContentLoaded', () => {
+            const usuarioId = 1; // Reemplaza con el ID del usuario correspondiente
+            loadTransactions(usuarioId);
+        });
+    </script>
+</body>
+</html>
+

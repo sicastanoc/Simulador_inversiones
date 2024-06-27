@@ -99,7 +99,15 @@ async function comprarAccion() {
     .then(response => {
         if (!response.ok) {
             if (response.status === 400) {
-                throw new Error('Bad Request');
+                throw new Error('Balance insuficiente para realizar la compra');
+            } else if (response.status === 422) {
+                throw new Error('Rellene correctamente todos los campos');
+            } else if (response.status === 403) {
+                throw new Error('Forbidden');
+            } else if (response.status === 404) {
+                throw new Error('Not Found');
+            } else if (response.status === 500) {
+                throw new Error('Internal Server Error');
             } else {
                 throw new Error('Network response was not ok');
             }
@@ -108,16 +116,14 @@ async function comprarAccion() {
     })
     .then(data => {
         console.log('Success:', data);
-        document.getElementById('result').innerText = JSON.stringify(data, null, 2);
         alert('Transaccion creada correctamente');
     })
     .catch((error) => {
         console.error('Error:', error);
-        document.getElementById('result').innerText = 'Error: ' + error;
         if (error.message === 'Bad Request') {
-            alert('Fallo al crear transaccion');
+            alert('Fallo al crear transaccion ');
         } else {
-            alert('Fallo al crear transaccion' + error.message);
+            alert('Fallo al crear transaccion ' + error.message);
         }
     });
 }
@@ -153,7 +159,15 @@ async function venderAccion() {
     .then(response => {
         if (!response.ok) {
             if (response.status === 400) {
-                throw new Error('Bad Request');
+                throw new Error('Cantidad insuficiente de acciones para vender');
+            } else if (response.status === 422) {
+                throw new Error(' Rellene correctamente todos los campos');
+            } else if (response.status === 403) {
+                throw new Error('Forbidden');
+            } else if (response.status === 404) {
+                throw new Error('Not Found');
+            } else if (response.status === 500) {
+                throw new Error('Internal Server Error');
             } else {
                 throw new Error('Network response was not ok');
             }
@@ -162,16 +176,13 @@ async function venderAccion() {
     })
     .then(data => {
         console.log('Success:', data);
-        document.getElementById('result').innerText = JSON.stringify(data, null, 2);
         alert('Transaccion creada correctamente');
     })
     .catch((error) => {
-        console.error('Error:', error);
-        document.getElementById('result').innerText = 'Error: ' + error;
         if (error.message === 'Bad Request') {
-            alert('Fallo al crear transaccion');
+            alert('Fallo al crear transaccion ');
         } else {
-            alert('Fallo al crear transaccion' + error.message);
+            alert('Fallo al crear transaccion ' + error.message);
         }
     });
 }
