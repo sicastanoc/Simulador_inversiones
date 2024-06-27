@@ -19,6 +19,7 @@ class User(Base):
 
     usuario_id = Column(Integer, primary_key=True, index=True)
     nombre_usuario = Column(String, index=True, nullable=False)
+    balance = Column(Float, index=True, nullable=False)
 
 
 class Transaction(Base):
@@ -55,9 +56,12 @@ class UserCreate(UserBase):
 
 class UserInDB(UserBase):
     usuario_id: int
+    balance: float
 
     class Config:
         orm_mode = True
+
+
 
 class UserUpdate(UserBase):
     pass
@@ -149,15 +153,16 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
         raise HTTPException(status_code=400, detail="Nombre de usuario ya existe")
 
     db_user = User(**user.dict())
+    db_user.balance = 1000000
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
     return db_user
 
 #Obtener informacion del usuario
-@app.get("/users/{nombre_usuario}", response_model=List[UserInDB])
+@app.get("/users/{nombre_usuario}", response_model=UserInDB)
 def get_users(nombre_usuario: str, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.nombre_usuario == nombre_usuario).all()
+    user = db.query(User).filter(User.nombre_usuario == nombre_usuario).first()
     if not user:
         raise HTTPException(status_code=404, detail="No usuarios con este nombre")
     return user
