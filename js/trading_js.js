@@ -27,6 +27,18 @@ function cerrarSesion() {
     });
 }
 
+// Función para obtener y mostrar los precios de las acciones
+function volver() {
+    var logoutBtn = document.getElementById('volver');
+    logoutBtn.addEventListener('click', function () {
+
+    const username = getParameterByName('username');
+
+    // Redireccionar a trading.html con el nombre de usuario como parámetro de consulta
+    window.location.href = `trading.html?username=${encodeURIComponent(username)}`;
+    });
+}
+
 function getParameterByName(name) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(name);
@@ -64,6 +76,15 @@ async function obtenerBalance() {
         // Manejar el error, por ejemplo, mostrando un mensaje al usuario
         document.getElementById('balance').textContent = 'Error al obtener el balance';
     }
+}
+
+async function obtenerUsuarioID(nombreUsuario) {
+    const response = await fetch(`http://127.0.0.1:8000/users/${nombreUsuario}`);
+    if (!response.ok) {
+        throw new Error('Network response was not ok');
+    }
+    const userData = await response.json();
+    return userData.usuario_id;
 }
 
 
@@ -186,3 +207,13 @@ async function venderAccion() {
         }
     });
 }
+
+function ver_transacciones(){
+    event.preventDefault(); // Prevenir el envío del formulario por defecto
+    
+    const username = getParameterByName('username');
+
+    // Redireccionar a trading.html con el nombre de usuario como parámetro de consulta
+    window.location.href = `transacciones.html?username=${encodeURIComponent(username)}`;
+        
+  }

@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tabla de Transacciones</title>
+    <script src="../js/trading_js.js"></script>
+    <link rel="stylesheet" href="../static/styles_trading.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -74,7 +76,7 @@
                 row.appendChild(cellCantidad);
 
                 const cellPrecio = document.createElement('td');
-                cellPrecio.textContent = transaction.precio;
+                cellPrecio.textContent = transaction.precio.toFixed(2);
                 row.appendChild(cellPrecio);
 
                 const cellNombreAccion = document.createElement('td');
@@ -84,13 +86,22 @@
                 tbody.appendChild(row);
             });
         }
-
-        // Cargar las transacciones para un usuario específico al cargar la página
-        document.addEventListener('DOMContentLoaded', () => {
-            const usuarioId = 1; // Reemplaza con el ID del usuario correspondiente
-            loadTransactions(usuarioId);
-        });
-    </script>
+        // Obtener el nombre de usuario de los parámetros de la URL
+        const username = getParameterByName('username');
+        
+        // Obtener el ID del usuario y luego cargar las transacciones
+        obtenerUsuarioID(username)
+            .then(usuarioId => {
+                loadTransactions(usuarioId);
+            })
+            .catch(error => {
+                console.error('Error obteniendo usuario ID:', error.message);
+                // Manejar el error aquí, por ejemplo, mostrar un mensaje de error al usuario
+            });
+        </script>
+        <div class="listaBotones">
+            <button onclick= volver() id="volver">Regresar</button>
+        </div>
 </body>
 </html>
 
