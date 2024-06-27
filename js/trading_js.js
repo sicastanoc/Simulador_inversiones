@@ -128,7 +128,7 @@ async function comprarAccion() {
             } else if (response.status === 404) {
                 throw new Error('Not Found');
             } else if (response.status === 500) {
-                throw new Error('Internal Server Error');
+                throw new Error('Rellene correctamente todos los campos');
             } else {
                 throw new Error('Network response was not ok');
             }
@@ -188,7 +188,7 @@ async function venderAccion() {
             } else if (response.status === 404) {
                 throw new Error('Not Found');
             } else if (response.status === 500) {
-                throw new Error('Internal Server Error');
+                throw new Error('Rellene correctamente todos los campos');
             } else {
                 throw new Error('Network response was not ok');
             }
@@ -215,5 +215,15 @@ function ver_transacciones(){
 
     // Redireccionar a trading.html con el nombre de usuario como parámetro de consulta
     window.location.href = `transacciones.html?username=${encodeURIComponent(username)}`;
+        
+  }
+
+function ver_portafolio(){
+    event.preventDefault(); // Prevenir el envío del formulario por defecto
+    
+    const username = getParameterByName('username');
+
+    // Redireccionar a trading.html con el nombre de usuario como parámetro de consulta
+    window.location.href = `portafolio.html?username=${encodeURIComponent(username)}`;
         
   }

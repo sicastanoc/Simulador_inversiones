@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cantidad de Acciones por Usuario</title>
+    <script src="../js/trading_js.js"></script>
+    <link rel="stylesheet" href="../static/styles_trading.css">
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cantidad de Acciones por Usuario</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre de la Acción</th>
+                <th>Cantidad Neta de Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="stock-body">
+            <!-- Las filas de acciones se agregarán aquí mediante JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        // Función para cargar la cantidad neta de acciones por usuario
+        async function loadStock(usuarioId) {
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/transactions/${usuarioId}`);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const transactions = await response.json();
+
+                // Calcular cantidad neta de acciones por acción
+                const stockMap = new Map();
+                transactions.forEach(transaction => {
+                    const key = transaction.nombre_accion;
+                    const cantidad = transaction.tipo_transaccion === 'Compra' ? transaction.cantidad : -transaction.cantidad;
+                    if (stockMap.has(key)) {
+                        stockMap.set(key, stockMap.get(key) + cantidad);
+                    } else {
+                        stockMap.set(key, cantidad);
+                    }
+                });
+
+                // Llenar la tabla con los datos calculados
+                const tbody = document.getElementById('stock-body');
+                tbody.innerHTML = ''; // Limpiar el contenido existente
+
+                stockMap.forEach((cantidad, nombreAccion) => {
+                    const row = document.createElement('tr');
+
+                    const cellNombreAccion = document.createElement('td');
+                    cellNombreAccion.textContent = nombreAccion;
+                    row.appendChild(cellNombreAccion);
+
+                    const cellCantidad = document.createElement('td');
+                    cellCantidad.textContent = cantidad;
+                    row.appendChild(cellCantidad);
+
+                    tbody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error:', error.message);
+                // Manejar el error aquí, por ejemplo, mostrar un mensaje de error al usuario
+            }
+        }
+
+        // Obtener el nombre de usuario de los parámetros de la URL
+        const username = getParameterByName('username');
+        
+        // Obtener el ID del usuario y luego cargar la cantidad neta de acciones
+        obtenerUsuarioID(username)
+            .then(usuarioId => {
+                loadStock(usuarioId);
+            })
+            .catch(error => {
+                console.error('Error obteniendo usuario ID:', error.message);
+                // Manejar el error aquí, por ejemplo, mostrar un mensaje de error al usuario
+            });
+    </script>
+    <div class="listaBotones">
+        <button onclick= volver() id="volver">Regresar</button>
+    </div>
+</body>
+</html>
