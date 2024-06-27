@@ -30,6 +30,7 @@ class Transaction(Base):
     accion_id = Column(Integer,ForeignKey('acciones.accion_id'), index=True, nullable=False)
     tipo_transaccion = Column(String, index=True, nullable=False)
     cantidad = Column(Integer, index=True, nullable=False)
+    precio = Column(Float, index=True, nullable=False)
     TransactionDate = Column(DateTime, default=func.now())
 
 class Accion(Base):
@@ -72,6 +73,7 @@ class TransactionBase(BaseModel):
     tipo_transaccion: str
     cantidad: int
     TransactionDate: datetime = Field(default_factory=datetime.now)
+    precio: float
 
     class Config:
         orm_mode = True
@@ -174,18 +176,75 @@ def create_transaction(transaction: TransactionCreate, db: Session = Depends(get
     accion_id = db.query(Accion).filter(Accion.nombre_abreviado == transaction.nombre_abreviado).first().accion_id
     precio= db.query(Historia_accion).filter(Historia_accion.accion_id == accion_id).first().precio
     usuario_id = db.query(User).filter(User.nombre_usuario == transaction.nombre_usuario).first().usuario_id
+    usuario = db.query(User).filter(User.nombre_usuario == transaction.nombre_usuario).first()
 
-    crear_transaccion = TransactionInDB(
-        accion_id=accion_id,
-        usuario_id=usuario_id,
-        tipo_transaccion=transaction.tipo_transaccion,
-        cantidad=transaction.cantidad
-    )
+    if transaction.tipo_transaccion == 'Compra':
+        total_cost = transaction.cantidad * precio
+        if usuario.balance < total_cost:
+            raise HTTPException(status_code=400, detail="Balance insuficiente para realizar la compra")
+        
+        usuario.balance -= total_cost
+        
+        # Actualizar el balance del usuario
+        db.add(usuario)
+        db.commit()
+        db.refresh(usuario)
 
-    db_transaccion = Transaction(**crear_transaccion.model_dump())
-    db.add(db_transaccion)
-    db.commit()
-    db.refresh(db_transaccion)
+        # Crear la transacción
+        crear_transaccion = TransactionInDB(
+            accion_id=accion_id,
+            usuario_id=usuario.usuario_id,
+            tipo_transaccion=transaction.tipo_transaccion,
+            cantidad=transaction.cantidad,
+            precio=precio
+        )
+        
+        db_transaccion = Transaction(**crear_transaccion.model_dump())
+        db.add(db_transaccion)
+        db.commit()
+        db.refresh(db_transaccion)
+    
+    elif transaction.tipo_transaccion == 'Venta':
+        # Verificar si el usuario tiene suficientes acciones para vender
+        total_cantidad_compras = db.query(func.sum(Transaction.cantidad)).filter(
+            Transaction.usuario_id == usuario.usuario_id,
+            Transaction.accion_id == accion_id,
+            Transaction.tipo_transaccion == 'Compra'
+        ).scalar() or 0
+        
+        total_cantidad_ventas = db.query(func.sum(Transaction.cantidad)).filter(
+            Transaction.usuario_id == usuario.usuario_id,
+            Transaction.accion_id == accion_id,
+            Transaction.tipo_transaccion == 'Venta'
+        ).scalar() or 0
+        
+        total_cantidad = total_cantidad_compras - total_cantidad_ventas
+        
+        if total_cantidad < transaction.cantidad:
+            raise HTTPException(status_code=400, detail="Cantidad insuficiente de acciones para vender")
+        
+        total_income = transaction.cantidad * precio
+        usuario.balance += total_income
+        
+        # Actualizar el balance del usuario
+        db.add(usuario)
+        db.commit()
+        db.refresh(usuario)
+
+        # Crear la transacción
+        crear_transaccion = TransactionInDB(
+            accion_id=accion_id,
+            usuario_id=usuario.usuario_id,
+            tipo_transaccion=transaction.tipo_transaccion,
+            cantidad=transaction.cantidad,
+            precio=precio
+        )
+        
+        db_transaccion = Transaction(**crear_transaccion.model_dump())
+        db.add(db_transaccion)
+        db.commit()
+        db.refresh(db_transaccion)
+
     return db_transaccion
 
 
