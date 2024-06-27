@@ -17,9 +17,7 @@ logger.setLevel(logging.INFO)
 def main():
 
     db = Session()
-
     stock_list = StockServices(db).get_all_values()
-    print(stock_list)
 
     for stock in stock_list:
         
@@ -28,33 +26,21 @@ def main():
             res = RequestData.get_request(stock.nombre_abreviado)
 
             last_value = HistoryStocksServices(db).get_value(stock.accion_id)
-            print(last_value)
 
             market_time = datetime.fromtimestamp(res.get("regularMarketTime"))
-            print(market_time)
             close = res.get("close")
-            print(close)
 
             if last_value:
-                print('llegue pero ya esta el valor')
 
                 if last_value.fecha == market_time and last_value.precio == close:
                     logger.info("La info ya esta en la base de datos")
                     continue
-
-                else:
-                    HistoryStocksServices(db).create_value(value = HistoryStock(
-                        accion_id = stock.accion_id,
-                        fecha = market_time,
-                        precio = close
-                    ))
                 
-            else:
-                HistoryStocksServices(db).create_value(value = HistoryStock(
-                    accion_id = stock.accion_id,
-                    fecha = market_time,
-                    precio = close
-                ))
+            HistoryStocksServices(db).create_value(value = HistoryStock(
+                accion_id = stock.accion_id,
+                fecha = market_time,
+                precio = close
+            ))
 
         except (TypeError, ):
             logger.info(f"No se encuentra la accion: {stock}")
