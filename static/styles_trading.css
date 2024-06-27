@@ -1,8 +1,8 @@
 .sidebar {
-    position: fixed;
+    position: absolute;
     top: 0;
     right: 0; /* Posicionar a la derecha */
-    width: 160px; /* Ancho del sidebar */
+    width: 25vh; /* Ancho del sidebar */
     height: 100vh; /* Altura del sidebar, ajustada al tamaño de la ventana */
     background-color: #f0f0f0;
     padding: 20px;
@@ -56,10 +56,17 @@ body {
     padding: 20px;
     background-color: #ffffff;
     margin-right: 200px;
+    height: 100vh;
 }
 
 .tradingview-widget-container {
     margin-bottom: 10px; /* Espacio entre los widgets de TradingView */
+    height: 100vh;
+}
+
+.tradingview-widget-container__widget {
+    margin-bottom: 10px; /* Espacio entre los widgets de TradingView */
+    height: 100vh;
 }
 
 .tradingview-widget-copyright {
@@ -76,9 +83,8 @@ body {
     padding: 10px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    height: 5vh;
+    height: 10vh;
 }
-
 
 .precio-item h5 {
     margin-top: 0;
