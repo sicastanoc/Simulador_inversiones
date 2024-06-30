@@ -34,7 +34,6 @@
             <tr>
                 <th>Nombre de la Acción</th>
                 <th>Cantidad Neta de Acciones</th>
-                <th>Precio de la Acción</th>
             </tr>
         </thead>
         <tbody id="stock-body">
@@ -42,35 +41,7 @@
         </tbody>
     </table>
 
-    <h2>Valor Total del Portafolio: <span id="total-portfolio-value">0</span></h2>
-
     <script>
-        // Función para obtener el precio de la acción
-    // Función para obtener el precio de la acción
-    async function getStockPrice(stockName) {
-        try {
-            // Suponiendo que existe una API para obtener el ID de la acción por su nombre
-            const respuesta = await fetch(`http://127.0.0.1:8000/acciones_id/${stockName}`);
-            if (!respuesta.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const accionData = await respuesta.json();
-            const accionID = accionData.accion_id;
-
-            // Suponiendo que existe una API para obtener el precio de la acción por su ID
-            const response = await fetch(`http://127.0.0.1:8000/acciones/${accionID}`);
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const data = await response.json();
-            return data.precio;
-        } catch (error) {
-            console.error('Error obteniendo el precio de la acción:', error.message);
-            throw error;
-        }
-    }
-
-
         // Función para cargar la cantidad neta de acciones por usuario
         async function loadStock(usuarioId) {
             try {
@@ -96,9 +67,7 @@
                 const tbody = document.getElementById('stock-body');
                 tbody.innerHTML = ''; // Limpiar el contenido existente
 
-                let totalPortfolioValue = 0;
-
-                for (let [nombreAccion, cantidad] of stockMap.entries()) {
+                stockMap.forEach((cantidad, nombreAccion) => {
                     const row = document.createElement('tr');
 
                     const cellNombreAccion = document.createElement('td');
@@ -109,20 +78,8 @@
                     cellCantidad.textContent = cantidad;
                     row.appendChild(cellCantidad);
 
-                    const cellPrecio = document.createElement('td');
-                    const precio = await getStockPrice(nombreAccion);
-                    cellPrecio.textContent = precio;
-                    row.appendChild(cellPrecio);
-
                     tbody.appendChild(row);
-
-                    // Calcular el valor total del portafolio
-                    totalPortfolioValue += cantidad * precio;
-                }
-
-                // Mostrar el valor total del portafolio
-                document.getElementById('total-portfolio-value').textContent = totalPortfolioValue.toFixed(2);
-
+                });
             } catch (error) {
                 console.error('Error:', error.message);
                 // Manejar el error aquí, por ejemplo, mostrar un mensaje de error al usuario

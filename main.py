@@ -124,6 +124,12 @@ class PrecioAccion(BaseModel):
     class Config:
         orm_mode = True
 
+class AccionID(BaseModel):
+    accion_id: int
+
+    class Config:
+        orm_mode = True
+
 class TransactionResponse(BaseModel):
     TransactionDate: datetime
     tipo_transaccion: str
@@ -255,16 +261,6 @@ def create_transaction(transaction: TransactionCreate, db: Session = Depends(get
     return db_transaccion
 
 
-
-
-#Obtener transacciones
-# @app.get("/transactions/{usuario_id}", response_model=List[TransactionInDB])
-# def get_transactions(usuario_id: int, db: Session = Depends(get_db)):
-#     transactions = db.query(Transaction).filter(Transaction.usuario_id == usuario_id).all()
-#     if not transactions:
-#         raise HTTPException(status_code=404, detail="No hay transacciones del usuario")
-#     return transactions
-
 @app.get("/transactions/{usuario_id}", response_model=List[TransactionResponse])
 def get_transactions(usuario_id: int, db: Session = Depends(get_db)):
     transactions = db.query(
@@ -316,4 +312,15 @@ def get_precion_accion(accion_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="No hay precios para esta acción")
 
     return resultado
+
+# Obtener información de la acción por nombre abreviado
+@app.get("/acciones_id/{nombre_abreviado}", response_model=AccionID)
+def get_accion(nombre_abreviado: str, db: Session = Depends(get_db)):
+    accion = db.query(Accion).filter(Accion.nombre_abreviado == nombre_abreviado).first()
+    if not accion:
+        raise HTTPException(status_code=404, detail="No hay acción con este nombre abreviado")
+    return accion
+
+
+
 
