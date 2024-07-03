@@ -50,7 +50,7 @@
     async function getStockPrice(stockName) {
         try {
             // Suponiendo que existe una API para obtener el ID de la acción por su nombre
-            const respuesta = await fetch(`http://127.0.0.1:8000/acciones_id/${stockName}`);
+            const respuesta = await fetch(`http://54.210.10.204:8000/acciones_id/${stockName}`);
             if (!respuesta.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -58,7 +58,7 @@
             const accionID = accionData.accion_id;
 
             // Suponiendo que existe una API para obtener el precio de la acción por su ID
-            const response = await fetch(`http://127.0.0.1:8000/acciones/${accionID}`);
+            const response = await fetch(`http://54.210.10.204:8000/acciones/${accionID}`);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -74,7 +74,7 @@
         // Función para cargar la cantidad neta de acciones por usuario
         async function loadStock(usuarioId) {
             try {
-                const response = await fetch(`http://127.0.0.1:8000/transactions/${usuarioId}`);
+                const response = await fetch(`http://54.210.10.204:8000/transactions/${usuarioId}`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }

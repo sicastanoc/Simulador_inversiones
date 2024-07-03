@@ -45,7 +45,7 @@
         // Función para cargar la cantidad neta de acciones por usuario
         async function loadStock(usuarioId) {
             try {
-                const response = await fetch(`http://127.0.0.1:8000/transactions/${usuarioId}`);
+                const response = await fetch(`http://54.210.10.204:8000/transactions/${usuarioId}`);
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }

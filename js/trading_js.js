@@ -1,6 +1,6 @@
 // Función para obtener y mostrar los precios de las acciones
 async function mostrarPrecios(accion_id,id_precio_accion) {
-    const response = await fetch(`http://127.0.0.1:8000/acciones/${accion_id}`); // Reemplaza {accion_id} con el ID de la acción específica
+    const response = await fetch(`http://54.210.10.204:8000/acciones/${accion_id}`); // Reemplaza {accion_id} con el ID de la acción específica
     const data = await response.json();
     console.log(data)
 
@@ -59,7 +59,7 @@ async function obtenerBalance() {
     console.log(username)
 
     try {
-        const response = await fetch(`http://127.0.0.1:8000/users/${username}`);
+        const response = await fetch(`http://54.210.10.204:8000/users/${username}`);
         if (!response.ok) {
             throw new Error('Error al obtener el balance del usuario');
         }
@@ -79,7 +79,7 @@ async function obtenerBalance() {
 }
 
 async function obtenerUsuarioID(nombreUsuario) {
-    const response = await fetch(`http://127.0.0.1:8000/users/${nombreUsuario}`);
+    const response = await fetch(`http://54.210.10.204:8000/users/${nombreUsuario}`);
     if (!response.ok) {
         throw new Error('Network response was not ok');
     }
@@ -110,7 +110,7 @@ async function comprarAccion() {
     };
 
     // Envía la solicitud POST a la API usando Fetch
-    fetch('http://127.0.0.1:8000/transactions/', {
+    fetch('http://54.210.10.204:8000/transactions/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -170,7 +170,7 @@ async function venderAccion() {
     };
 
     // Envía la solicitud POST a la API usando Fetch
-    fetch('http://127.0.0.1:8000/transactions/', {
+    fetch('http://54.210.10.204:8000/transactions/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

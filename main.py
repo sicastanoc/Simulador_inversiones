@@ -7,7 +7,7 @@ from datetime import datetime, date
 from typing import List
 from fastapi.middleware.cors import CORSMiddleware
 
-SQLALCHEMY_DATABASE_URL = "sqlite:///./db/test.db"
+SQLALCHEMY_DATABASE_URL = "sqlite:///./db/database.db"
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -63,9 +63,9 @@ class UserInDB(UserBase):
         orm_mode = True
 
 
-
 class UserUpdate(UserBase):
     pass
+
 
 class TransactionBase(BaseModel):
     usuario_id: int
@@ -277,7 +277,6 @@ def get_transactions(usuario_id: int, db: Session = Depends(get_db)):
     return transactions
 
 
-
 #Crear una accion
 @app.post("/acciones/", response_model=AccionInDB)
 def create_accion(accion: AccionCreate, db: Session = Depends(get_db)):
@@ -286,8 +285,6 @@ def create_accion(accion: AccionCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_accion)
     return db_accion
-
-
 
 
 #Obtener precio de una a
@@ -313,6 +310,7 @@ def get_precion_accion(accion_id: int, db: Session = Depends(get_db)):
 
     return resultado
 
+
 # Obtener información de la acción por nombre abreviado
 @app.get("/acciones_id/{nombre_abreviado}", response_model=AccionID)
 def get_accion(nombre_abreviado: str, db: Session = Depends(get_db)):
@@ -320,7 +318,3 @@ def get_accion(nombre_abreviado: str, db: Session = Depends(get_db)):
     if not accion:
         raise HTTPException(status_code=404, detail="No hay acción con este nombre abreviado")
     return accion
-
-
-
-
