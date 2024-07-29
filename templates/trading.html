@@ -26,16 +26,17 @@
         <label>Seleccione una acción</label>
             <select id="acciones"  name="click">
                 <option value="default"></option>
-                <option value="BCOLOMBIA">BCOLOMBIA</option>
                 <option value="GEB">GEB</option>
                 <option value="GRUPOARGOS">GRUPOARGOS</option>
                 <option value="ISA">ISA</option>
                 <option value="ECOPETROL">ECOPETROL</option>
                 <option value="CELSIA">CELSIA</option>
-                <option value="PFAVAL">PFAVAL</option>
-                <option value="EXITO">EXITO</option>
                 <option value="CORFICOLCF">CORFICOLCF</option>
-                <option value="GRUPOSURA">GRUPOSURA</option>
+                <option value="BOGOTA">BOGOTA</option>
+                <option value="CEMARGOS">CEMARGOS</option>
+                <option value="PFDAVVNDA">PFDAVVNDA</option>
+                <option value="ELCONDOR">ELCONDOR</option>
+
             </select>
             <script>
                 document.querySelectorAll('#valueList li').forEach(item => {
@@ -64,11 +65,6 @@
         <!-- Contenido a la izquierda -->
         <div class="left-div">
             <div class="containerAcciones">
-                <div id="precioBancolombia"></div>
-            </div>  
-            <script>mostrarPrecios(1,'precioBancolombia')</script>
-
-            <div class="containerAcciones">
                 <div id="precioEnergiaBogota"></div>
             </div>  
             <script>mostrarPrecios(2,'precioEnergiaBogota')</script>
@@ -93,28 +89,30 @@
             </div>  
             <script>mostrarPrecios(6,'precioCelsia')</script>
 
-
-            <div class="containerAcciones">
-                <div id="precioAval"></div>
-            </div>  
-            <script>mostrarPrecios(7,'precioAval')</script>
-
-
-            <div class="containerAcciones">
-                <div id="precioExito"></div>
-            </div>  
-            <script>mostrarPrecios(8,'precioExito')</script>
-
-
             <div class="containerAcciones">
                 <div id="precioCorficolombiana"></div>
             </div>  
             <script>mostrarPrecios(9,'precioCorficolombiana')</script>
 
             <div class="containerAcciones">
-                <div id="precioSura"></div>
+                <div id="precioBOGOTA"></div>
             </div>  
-            <script>mostrarPrecios(10,'precioSura')</script>
+            <script>mostrarPrecios(11,'precioBOGOTA')</script>
+
+            <div class="containerAcciones">
+                <div id="precioCEMARGOS"></div>
+            </div>  
+            <script>mostrarPrecios(12,'precioCEMARGOS')</script>
+
+            <div class="containerAcciones">
+                <div id="precioPFDAVVNDA"></div>
+            </div>  
+            <script>mostrarPrecios(13,'precioPFDAVVNDA')</script>
+
+            <div class="containerAcciones">
+                <div id="precioELCONDOR"></div>
+            </div>  
+            <script>mostrarPrecios(14,'precioELCONDOR')</script>
 
         </div>
 
@@ -131,16 +129,16 @@
                 <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
                     {
                         "symbols": [
-                            ["BVC:BCOLOMBIA|ALL"],
                             ["BVC:GEB|ALL"],
                             ["BVC:GRUPOARGOS|ALL"],
                             ["BVC:ISA|ALL"],
                             ["BVC:ECOPETROL|ALL"],
                             ["BVC:CELSIA|ALL"],
-                            ["BVC:PFAVAL|ALL"],
-                            ["BVC:EXITO|ALL"],
                             ["BVC:CORFICOLCF|ALL"],
-                            ["BVC:GRUPOSURA|ALL"]
+                            ["BVC:BOGOTA|ALL"],
+                            ["BVC:CEMARGOS|ALL"],
+                            ["BVC:PFDAVVNDA|ALL"],
+                            ["BVC:ELCONDOR|ALL"]
                         ],
                         "chartOnly": false,
                         "width": "100%",

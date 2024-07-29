@@ -187,7 +187,7 @@ def get_users(nombre_usuario: str, db: Session = Depends(get_db)):
 @app.post("/transactions/")
 def create_transaction(transaction: TransactionCreate, db: Session = Depends(get_db)):
     accion_id = db.query(Accion).filter(Accion.nombre_abreviado == transaction.nombre_abreviado).first().accion_id
-    precio= db.query(Historia_accion).filter(Historia_accion.accion_id == accion_id).first().precio
+    precio = db.query(Historia_accion).filter(Historia_accion.accion_id == accion_id).order_by(Historia_accion.fecha.desc()).first().precio
     usuario_id = db.query(User).filter(User.nombre_usuario == transaction.nombre_usuario).first().usuario_id
     usuario = db.query(User).filter(User.nombre_usuario == transaction.nombre_usuario).first()
 
